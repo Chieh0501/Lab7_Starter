@@ -44,21 +44,8 @@ function initializeServiceWorker() {
   /*******************/
   // We first must register our ServiceWorker here before any of the code in
   // sw.js is executed.
-  if ('serviceWorker' in navigator) {
-      window.addEventListener('load', (event) => {
-        try{  
-          const registration = navigator.serviceWorker.register("./sw.js");
-          if(registration.active){
-            console.log("Success!");
-          }
-        } catch (err) {
-          console.log("Registration failed");
-        }
-      });
-  }
   // B1. TODO - Check if 'serviceWorker' is supported in the current browser
   // B2. TODO - Listen for the 'load' event on the window object.
-
   // Steps B3-B6 will be *inside* the event listener's function created in B2
   // B3. TODO - Register './sw.js' as a service worker (The MDN article
   //            "Using Service Workers" will help you here)
@@ -87,7 +74,6 @@ async function getRecipes() {
   // from the network
   // A2. TODO - Create an empty array to hold the recipes that you will fetch
   let recipe_list = [];
-  let counter = 0;
   // A3. TODO - Return a new Promise. If you are unfamiliar with promises, MDN
   //            has a great article on them. A promise takes one parameter - A
   //            function (we call these callback functions). That function will
@@ -97,16 +83,8 @@ async function getRecipes() {
     for(let token of RECIPE_URLS){
       try {
           let response = await fetch(token);
-          let json = await response.json();
-          recipe_list.push(json);
-          counter++;
-          if(counter == RECIPE_URLS.length){
-            saveRecipesToStorage(recipe_list);
-            resolve(recipe_list);
-          }
       } catch (err) {
-        console.error(err);
-        reject(err);
+
       }
     }
   });
